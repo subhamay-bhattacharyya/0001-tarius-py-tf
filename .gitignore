@@ -1,0 +1,5 @@
+.DS_Store
+.terraform*
+change-set.md
+sonar-scan.yaml
+data/response.json
