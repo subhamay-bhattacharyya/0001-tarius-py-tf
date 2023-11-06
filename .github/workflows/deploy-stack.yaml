@@ -1,0 +1,39 @@
+name: "Terraform Plan and Apply"
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - 'feature**'
+    paths-ignore:
+      - '**/README.md'
+      - '**/.github/workflows/**.yaml'
+
+
+permissions:
+  id-token: write # This is required for aws oidc connection
+  contents: write # This is required for actions/checkout
+  issues: write
+  pull-requests: write # This is required for gh bot to comment PR  
+
+jobs:
+  plan-apply:
+    name: "plan-apply"
+    uses: subhamay-bhattacharyya/9999-reusable-wf/.github/workflows/tf-cicd-create.yaml@main
+    with:
+      deploy-reviewer-test: 142895397
+      deploy-reviewer-prod: 144537759
+      pr-approver: bsubhamay-approver
+    secrets: 
+      git-token: ${{ secrets.GIT_TOKEN }}
+      aws-region:  ${{ secrets.AWS_REGION }}
+      devl-aws-role-arn: ${{ secrets.DEVL_AWS_ROLE_ARN }}
+      devl-kms-key-arn:  ${{ secrets.DEVL_AWS_KMS_KEY_ARN }}
+      devl-aws-tf-state-bucket-name:  ${{ secrets.DEVL_AWS_TF_STATE_BUCKET_NAME }}
+      test-aws-role-arn: ${{ secrets.TEST_AWS_ROLE_ARN }}
+      test-kms-key-arn: ${{ secrets.TEST_AWS_KMS_KEY_ARN }}
+      test-aws-tf-state-bucket-name:  ${{ secrets.TEST_AWS_TF_STATE_BUCKET_NAME }}
+      prod-aws-role-arn: ${{ secrets.PROD_AWS_ROLE_ARN }}
+      prod-kms-key-arn: ${{ secrets.PROD_AWS_KMS_KEY_ARN }}
+      prod-aws-tf-state-bucket-name:  ${{ secrets.PROD_AWS_TF_STATE_BUCKET_NAME }}

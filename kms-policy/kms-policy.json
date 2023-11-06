@@ -1,0 +1,63 @@
+{
+    "Version": "2012-10-17",
+    "Id": "kms-key-policy",
+    "Statement": [
+        {
+            "Sid": "Enable IAM User Permissions",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::<AWS Account Id>:root"
+            },
+            "Action": "kms:*",
+            "Resource": "*"
+        },
+        {
+            "Sid": "Allow access for Key Administrators",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::<AWS Account Id>:user/<AWS Admin User>"
+            },
+            "Action": [
+                "kms:Create*",
+                "kms:Describe*",
+                "kms:Enable*",
+                "kms:List*",
+                "kms:Put*",
+                "kms:Update*",
+                "kms:Revoke*",
+                "kms:Disable*",
+                "kms:Get*",
+                "kms:Delete*",
+                "kms:TagResource",
+                "kms:UntagResource",
+                "kms:ScheduleKeyDeletion",
+                "kms:CancelKeyDeletion"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "Allow Amazon SQS to use this key",
+            "Effect": "Allow",
+            "Principal": {
+                "Service": [
+                    "cloudwatch.amazonaws.com",
+                    "logs.amazonaws.com",
+                    "dynamodb.amazonaws.com",
+                    "kinesis.amazonaws.com",
+                    "sns.amazonaws.com",
+                    "s3.amazonaws.com",
+                    "ebs.amazonaws.com",
+                    "sqs.amazonaws.com",
+                    "ec2.amazonaws.com"
+                ]
+            },
+            "Action": [
+                "kms:Decrypt",
+                "kms:GenerateDataKey*",
+                "kms:Encrypt",
+                "kms:*"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
